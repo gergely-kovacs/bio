@@ -1,10 +1,14 @@
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
 const mode = process.env.NODE_ENV || 'development';
 const isProd = mode === 'production';
 
 module.exports = {
+	mode: mode,
+	devtool: isProd ? false : 'source-map',
 	entry: {
 		bundle: ['./src/main.js']
 	},
@@ -16,7 +20,7 @@ module.exports = {
 		mainFields: ['svelte', 'browser', 'module', 'main']
 	},
 	output: {
-		path: __dirname,
+		path: __dirname + '/docs',
 		filename: '[name].js',
 		chunkFilename: '[name].[id].js'
 	},
@@ -35,21 +39,25 @@ module.exports = {
 			{
 				test: /\.css$/,
 				use: [
-					/**
-					 * MiniCssExtractPlugin doesn't support HMR.
-					 * For developing, use 'style-loader' instead.
-					 * */
-					isProd ? MiniCssExtractPlugin.loader : 'style-loader',
+					{
+						loader: MiniCssExtractPlugin.loader,
+						options: {
+							hmr: !isProd,
+						},
+					},
 					'css-loader'
 				]
 			}
 		]
 	},
-	mode,
 	plugins: [
+		new CleanWebpackPlugin(),
 		new MiniCssExtractPlugin({
 			filename: '[name].css'
-		})
-	],
-	devtool: isProd ? false : 'source-map'
+		}),
+		new HtmlWebpackPlugin({
+			title: `Geko's page`,
+			favicon: 'assets/favicon.png'
+		}),
+	]
 };
