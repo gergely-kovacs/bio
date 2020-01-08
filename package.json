@@ -5,6 +5,7 @@
     "clean-webpack-plugin": "^3.0.0",
     "cross-env": "^5.2.0",
     "css-loader": "^2.1.1",
+    "gh-pages": "^2.2.0",
     "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "^0.6.0",
     "serve": "^11.0.0",
@@ -16,6 +17,6 @@
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack",
-    "dev": "webpack-dev-server --content-base docs"
+    "dev": "webpack-dev-server --content-base dist"
   }
 }
