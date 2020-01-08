@@ -1,0 +1,15 @@
+os: linux
+language: node_js
+node_js: 12
+
+script:
+  - "npm run lint"
+  - "npm run clean"
+  - "npm run build"
+
+deploy:
+  provider: pages
+  cleanup: false
+  token: $GITHUB_TOKEN
+  on:
+    branch: master
