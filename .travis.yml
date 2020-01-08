@@ -11,5 +11,6 @@ deploy:
   provider: pages
   cleanup: false
   token: $GITHUB_TOKEN
+  local_dir: dist
   on:
     branch: master
