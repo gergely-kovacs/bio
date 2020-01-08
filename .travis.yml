@@ -2,14 +2,6 @@ language: node_js
 node_js:
   - 12
 
-stages:
-  - test
-  - build
-  - deploy
-
-install:
-  - "npm install"
-
 script:
   - "npm run lint"
   - "npm run clean"
