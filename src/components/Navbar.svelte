@@ -1,30 +1,18 @@
 <script>
-
+  import active from "svelte-spa-router/active";
 </script>
 
 <style>
 
 </style>
 
-<nav class="navbar navbar-dark bg-dark">
-  <div class="container-fluid">
-    <span class="nav-item active">
-      <a class="nav-link" href="#">Intro</a>
-    </span>
-    <span class="nav-item">
-      <a class="nav-link" href="#">Movies</a>
-    </span>
-    <span class="nav-item">
-      <a class="nav-link" href="#">Music</a>
-    </span>
-    <span class="nav-item">
-      <a class="nav-link" href="#">Gaming</a>
-    </span>
-    <span class="nav-item">
-      <a class="nav-link" href="#">Hiking</a>
-    </span>
-    <span class="nav-item">
-      <a class="nav-link" href="#">Climbing</a>
-    </span>
-  </div>
-</nav>
+<div class="navbar">
+  <nav class="nav nav-pills">
+    <a class="nav-link" use:active href="#/">Intro</a>
+    <a class="nav-link" use:active href="#/movies">Movies</a>
+    <a class="nav-link" use:active href="#/music">Music</a>
+    <a class="nav-link" use:active href="#/gaming">Gaming</a>
+    <a class="nav-link" use:active href="#/hiking">Hiking</a>
+    <a class="nav-link" use:active href="#/climbing">Climbing</a>
+  </nav>
+</div>
