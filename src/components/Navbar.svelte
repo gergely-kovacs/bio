@@ -1,17 +1,30 @@
 <script>
+
 </script>
 
 <style>
-	.navbar {
-		display: flex;
-		justify-content: space-around;
-	}
+
 </style>
 
-<div class="navbar">
-	<div class="navitem">Intro</div>
-	<div class="navitem">Movies</div>
-	<div class="navitem">Video games</div>
-	<div class="navitem">Hiking</div>
-	<div class="navitem">Climbing</div>
-</div>
+<nav class="navbar navbar-dark bg-dark">
+  <div class="container-fluid">
+    <span class="nav-item active">
+      <a class="nav-link" href="#">Intro</a>
+    </span>
+    <span class="nav-item">
+      <a class="nav-link" href="#">Movies</a>
+    </span>
+    <span class="nav-item">
+      <a class="nav-link" href="#">Music</a>
+    </span>
+    <span class="nav-item">
+      <a class="nav-link" href="#">Gaming</a>
+    </span>
+    <span class="nav-item">
+      <a class="nav-link" href="#">Hiking</a>
+    </span>
+    <span class="nav-item">
+      <a class="nav-link" href="#">Climbing</a>
+    </span>
+  </div>
+</nav>
