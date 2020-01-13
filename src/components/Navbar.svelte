@@ -50,7 +50,7 @@
   }
 </style>
 
-<div class="navbar px-0 pt-0">
+<div class="navbar px-0 pt-0 pb-4">
   <nav class="nav nav-pills w-75">
     <a class="nav-link col text-center rounded-0" use:active href="#/">Intro</a>
     <a class="nav-link col text-center rounded-0" use:active href="#/movies">

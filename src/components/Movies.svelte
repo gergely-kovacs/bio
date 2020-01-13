@@ -18,7 +18,7 @@
 </style>
 
 <div class="container">
-  <h4 class="mt-4">Genres</h4>
+  <h4>Genres</h4>
   My favorite genres in order are:
   <ol>
     <li>Drama</li>
