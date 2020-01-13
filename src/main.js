@@ -1,11 +1,11 @@
-import 'bootstrap/dist/css/bootstrap.min.css'
-import './global.css'
-import App from './components/App.svelte'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './global.css';
+import App from './components/App.svelte';
 
 const app = new App({
   target: document.body
-})
+});
 
-window.app = app
+window.app = app;
 
-export default app
+export default app;
