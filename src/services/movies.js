@@ -1,4 +1,4 @@
-const OMDB_URL = 'http://www.omdbapi.com/';
+const OMDB_URL = 'https://www.omdbapi.com/';
 const OMDB_API_KEY = '&apikey=6416b521';
 const FAVORITE_MOVIES = [
   '?t=The+Sunset+Limited&y=2011',
