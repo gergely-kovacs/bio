@@ -1,4 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap';
 import './global.css';
 import App from './components/App.svelte';
 
