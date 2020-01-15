@@ -45,7 +45,7 @@
     <h4 class="mt-3">{list.snippet.title}</h4>
     {#if !list.shouldLoad}
       <button
-        role="button"
+        type="button"
         class="btn btn-secondary mb-2"
         on:click={() => {
           list.shouldLoad = true;
