@@ -1,6 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import { generateQueryUrls } from "../services/movies";
+  import { isDarkModeEnabled } from "../stores/theme";
 
   let movies = [];
 
@@ -31,7 +32,8 @@
   <a href="https://www.imdb.com/list/ls093225661/">here.</a>
   <br />
   Here's my top 5 as a preview:
-  <table class="table table-borderless table-dark">
+  <table
+    class="table table-borderless {$isDarkModeEnabled ? 'table-dark' : ''}">
     <thead>
       <tr>
         <th scope="col">#</th>

@@ -1,29 +1,9 @@
 <script>
   import { onMount } from "svelte";
   import active from "svelte-spa-router/active";
+  import { isDarkModeEnabled } from "../stores/theme";
 
-  const DARK_THEME_CLASSES = ["bg-dark", "text-light"];
-  const LIGHT_THEME_CLASSES = ["bg-light", "text-dark"];
-
-  onMount(() =>
-    toggleTheme({
-      target: {
-        checked: true
-      }
-    })
-  );
-
-  function toggleTheme(event) {
-    const isDarkThemeEnabled = event.target.checked;
-    const classesToAdd = isDarkThemeEnabled
-      ? DARK_THEME_CLASSES
-      : LIGHT_THEME_CLASSES;
-    const classesToRemove = !isDarkThemeEnabled
-      ? DARK_THEME_CLASSES
-      : LIGHT_THEME_CLASSES;
-    document.querySelector("body").classList.add(...classesToAdd);
-    document.querySelector("body").classList.remove(...classesToRemove);
-  }
+  onMount(() => isDarkModeEnabled.toggle({ target: { checked: true } }));
 </script>
 
 <style>
@@ -31,7 +11,6 @@
     width: 3.5em;
     height: 2em;
     border-radius: 2em;
-    background-color: #777;
   }
 
   .slider {
@@ -39,14 +18,12 @@
     height: 1.5em;
     border-radius: 1.5em;
     margin-left: 0.25em;
-    transition: 0.25s;
+    transition: 0.33s;
     cursor: pointer;
-    background-color: #2196f3;
   }
 
   input:checked + .slider {
     transform: translateX(1.5em);
-    background-color: #222;
   }
 </style>
 
@@ -69,8 +46,13 @@
       Climbing
     </a>
   </nav>
-  <label class="mb-0 switch d-flex align-items-center">
-    <input type="checkbox" class="d-none" on:change={toggleTheme} checked />
-    <span class="slider" />
+  <label
+    class="mb-0 switch d-flex align-items-center {$isDarkModeEnabled ? 'bg-secondary' : 'bg-primary'}">
+    <input
+      type="checkbox"
+      class="d-none"
+      on:change={isDarkModeEnabled.toggle}
+      checked />
+    <span class="slider {$isDarkModeEnabled ? 'bg-light' : 'bg-warning'}" />
   </label>
 </div>
