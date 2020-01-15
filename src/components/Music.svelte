@@ -59,8 +59,7 @@
         height="360"
         src="https://www.youtube.com/embed/videoseries?list={list.id}"
         frameborder="0"
-        allow="accelerometer; autoplay; encrypted-media; gyroscope;
-        picture-in-picture"
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen />
     {/if}
   {/each}
