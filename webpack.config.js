@@ -56,7 +56,7 @@ module.exports = {
       filename: '[name].css'
     }),
     new HtmlWebpackPlugin({
-      title: 'Geko\'s page',
+      template: path.resolve('src/index.html'),
       favicon: 'assets/favicon.png'
     })
   ]
