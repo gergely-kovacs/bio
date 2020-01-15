@@ -28,8 +28,8 @@
     <li>Action</li>
   </ol>
   <h4 class="mt-4">Films</h4>
-  You can check out the complete list of my favorites
-  <a href="https://www.imdb.com/list/ls093225661/">here.</a>
+  You can check out the complete list of my favorites on
+  <a href="https://www.imdb.com/list/ls093225661/">IMDb.</a>
   <br />
   Here's my top 5 as a preview:
   <table
