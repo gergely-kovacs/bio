@@ -61,21 +61,27 @@
       <a
         class="nav-item nav-link text-center rounded-0"
         use:active
+        href="#/games">
+        My games
+      </a>
+      <!-- <a
+        class="nav-item nav-link text-center rounded-0"
+        use:active
         href="#/gaming">
         Gaming
-      </a>
-      <a
+      </a> -->
+      <!-- <a
         class="nav-item nav-link text-center rounded-0"
         use:active
         href="#/hiking">
         Hiking
-      </a>
-      <a
+      </a> -->
+      <!-- <a
         class="nav-item nav-link text-center rounded-0"
         use:active
         href="#/climbing">
         Climbing
-      </a>
+      </a> -->
     </div>
     <label
       class="switch ml-auto mb-0 d-flex align-items-center {$isDarkModeEnabled ? 'bg-secondary' : 'bg-primary'}">
