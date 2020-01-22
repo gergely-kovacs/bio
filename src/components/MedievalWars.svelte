@@ -6,43 +6,83 @@
     initMap,
     advanceMobs,
     spawnMobs,
-    isLoseConditionMet
+    isLoseConditionMet,
+    movePlayer
   } from "../services/medieval-wars.js";
+  import { debounce } from "../services/common";
 
   let isErrorShown = false;
   let map = [[]];
-  let tickTask;
+  let updateState;
+  let renderState;
+  let controls;
 
   onMount(() => {
-    map = initMap();
-    tickTask = setInterval(advanceTime, 500);
-  });
-
-  onDestroy(() => clearInterval(tickTask));
-
-  function advanceTime() {
-    const canvas = document.getElementById("canvas");
-    if (!canvas.getContext) {
-      isErrorShown = true;
-      clearInterval(tickTask);
+    if (!isRunnable()) {
+      showError();
       return;
     }
+    map = initMap();
+    initControls();
+    updateState = setInterval(gameLoop, 500);
+    renderState = setInterval(renderLoop, 125);
+  });
 
+  onDestroy(() => endGame());
+
+  function isRunnable() {
+    const canvas = document.getElementById("canvas");
+    return !!canvas.getContext;
+  }
+
+  function showError() {
+    isErrorShown = true;
+  }
+
+  function initControls() {
+    controls = debounce(function(event) {
+      if (event.keyCode === 65) {
+        movePlayer(map, "left");
+      }
+      if (event.keyCode === 68) {
+        movePlayer(map, "right");
+      }
+      if (event.keyCode === 32) {
+        alert("The 'Space' key was pressed.");
+      }
+    }, 125);
+    document.addEventListener("keydown", controls);
+  }
+
+  function endGame() {
+    document.removeEventListener("keydown", controls);
+    clearInterval(updateState);
+    clearInterval(renderState);
+  }
+
+  function renderGameOverText() {
+    const canvas = document.getElementById("canvas");
     const context = canvas.getContext("2d");
+    context.font = "50px serif";
+    context.fillText("Game Over", 50, 90);
+  }
 
+  function gameLoop() {
     map = advanceMobs(map);
     map = spawnMobs(map);
+
+    if (isLoseConditionMet(map)) {
+      renderGameOverText();
+      endGame();
+    }
+  }
+
+  function renderLoop() {
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
     clearCanvas(canvas, context);
     renderPlayer(context);
     renderMobs(context);
-
-    if (isLoseConditionMet(map)) {
-      context.font = '50px serif';
-      context.fillText("Game Over", 50, 90);
-      clearInterval(tickTask);
-    }
-
-    console.log("tickin");
   }
 
   function clearCanvas(canvas, context) {
@@ -52,7 +92,8 @@
   function renderPlayer(context) {
     const player = new Image();
     player.src = Player;
-    context.drawImage(player, 160, 320);
+    const playerPosition = map[10].indexOf("player");
+    context.drawImage(player, 32 * playerPosition, 320);
   }
 
   function renderMobs(context) {
