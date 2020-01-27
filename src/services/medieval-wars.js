@@ -1,46 +1,63 @@
 export function initMap () {
-  const map = new Array(11).fill(new Array(11).fill(null));
-  map[10][5] = 'player';
-  return map;
-}
-
-export function advanceMobs (battleField) {
-  return [
-    new Array(11).fill(null),
-    ...battleField.slice(0, 10)
-  ];
-}
-
-export function spawnMobs (battleField) {
-  const firstRow = battleField[0].map(cell => {
-    if (Math.random() < 0.04) {
-      return 'mob_warrior';
+  return [{
+    type: 'player',
+    position: {
+      x: 160,
+      y: 320
     }
-    return cell;
+  }];
+}
+
+export function advanceMobs (map) {
+  const mobs = map.filter(entity => entity.type === 'mob_warrior');
+  const others = map.filter(entity => entity.type !== 'mob_warrior');
+  const movedMobs = mobs.map(mob => {
+    return {
+      ...mob,
+      position: {
+        ...mob.position,
+        y: mob.position.y + 1
+      }
+    };
   });
   return [
-    firstRow,
-    ...battleField.slice(1, 11)
+    ...movedMobs,
+    ...others
   ];
 }
 
-export function movePlayer (battleField, direction) {
-  const lastRow = battleField[10];
-  const playerPosition = lastRow.indexOf('player');
-  if (direction === 'left' && playerPosition > 0) {
-    lastRow[playerPosition - 1] = 'player';
-    lastRow[playerPosition] = null;
+export function spawnMobs (map) {
+  const shouldSpawn = Math.random() < 0.01;
+  return shouldSpawn
+    ? [
+      ...map,
+      {
+        type: 'mob_warrior',
+        position: {
+          x: Math.floor(Math.random() * 320),
+          y: 0
+        }
+      }
+    ]
+    : map;
+}
+
+export function movePlayer (map, direction) {
+  const player = map.find(entity => entity.type === 'player');
+  const others = map.filter(entity => entity.type !== 'player');
+  if (direction === 'left' && player.position.x > 0) {
+    player.position.x -= 1;
   }
-  if (direction === 'right' && playerPosition < 10) {
-    lastRow[playerPosition + 1] = 'player';
-    lastRow[playerPosition] = null;
+  if (direction === 'right' && player.position.x < 288) {
+    player.position.x += 1;
   }
   return [
-    ...battleField.slice(0, 10),
-    lastRow
+    ...others,
+    player
   ];
 }
 
-export function isLoseConditionMet (battleField) {
-  return !!battleField[10].filter(cell => cell === 'mob_warrior').length;
+export function isLoseConditionMet (map) {
+  const mobByTheEnd = map.find(entity => entity.type === 'mob_warrior' && entity.position.y === 320);
+  return !!mobByTheEnd;
 }

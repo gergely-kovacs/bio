@@ -1,58 +1,48 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import { initMap, advanceMobs, isLoseConditionMet } from '../src/services/medieval-wars';
+import { advanceMobs, isLoseConditionMet } from '../src/services/medieval-wars';
 
 describe('Medieval Wars', () => {
-  describe('initMap', () => {
-    it('should return an empty array', () => {
-      const expected = [
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null]
-      ];
-
-      const result = initMap();
-
-      expect(result).to.deep.equal(expected);
-    });
-  });
-
   describe('advanceMobs', () => {
     it('should move mobs further', () => {
-      const initialState = [
-        [null, 'mob_warrior', null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, 'mob_warrior', null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, 'mob_warrior', null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null]
-      ];
-      const expected = [
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, 'mob_warrior', null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, 'mob_warrior', null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, 'mob_warrior', null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null]
-      ];
+      const initialState = [{
+        type: 'mob_warrior',
+        position: {
+          x: 0,
+          y: 1
+        }
+      }, {
+        type: 'mob_warrior',
+        position: {
+          x: 250,
+          y: 251
+        }
+      }, {
+        type: 'player',
+        position: {
+          x: 160,
+          y: 320
+        }
+      }];
+      const expected = [{
+        type: 'mob_warrior',
+        position: {
+          x: 0,
+          y: 2
+        }
+      }, {
+        type: 'mob_warrior',
+        position: {
+          x: 250,
+          y: 252
+        }
+      }, {
+        type: 'player',
+        position: {
+          x: 160,
+          y: 320
+        }
+      }];
 
       const result = advanceMobs(initialState);
 
@@ -62,19 +52,25 @@ describe('Medieval Wars', () => {
 
   describe('isLoseConditionMet', () => {
     it('should return true when there are mobs in the last row', () => {
-      const mapState = [
-        [null, 'mob_warrior', null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, 'mob_warrior', null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, 'mob_warrior', null, null, null, null, null, null, null, null, null]
-      ];
+      const mapState = [{
+        type: 'mob_warrior',
+        position: {
+          x: 0,
+          y: 1
+        }
+      }, {
+        type: 'mob_warrior',
+        position: {
+          x: 250,
+          y: 320
+        }
+      }, {
+        type: 'player',
+        position: {
+          x: 160,
+          y: 320
+        }
+      }];
       const expected = true;
 
       const result = isLoseConditionMet(mapState);
@@ -83,19 +79,25 @@ describe('Medieval Wars', () => {
     });
 
     it('should return false when there are no mobs in the last row', () => {
-      const mapState = [
-        [null, 'mob_warrior', null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, 'mob_warrior', null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null],
-        [null, 'player', null, null, null, null, null, null, null, null, null]
-      ];
+      const mapState = [{
+        type: 'mob_warrior',
+        position: {
+          x: 0,
+          y: 1
+        }
+      }, {
+        type: 'mob_warrior',
+        position: {
+          x: 250,
+          y: 251
+        }
+      }, {
+        type: 'player',
+        position: {
+          x: 160,
+          y: 320
+        }
+      }];
       const expected = false;
 
       const result = isLoseConditionMet(mapState);

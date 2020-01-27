@@ -13,8 +13,6 @@
 
   let isErrorShown = false;
   let map = [[]];
-  let updateState;
-  let renderState;
   let controls;
 
   onMount(() => {
@@ -24,8 +22,7 @@
     }
     map = initMap();
     initControls();
-    updateState = setInterval(gameLoop, 500);
-    renderState = setInterval(renderLoop, 125);
+    gameLoop();
   });
 
   onDestroy(() => endGame());
@@ -40,7 +37,7 @@
   }
 
   function initControls() {
-    controls = debounce(function(event) {
+    controls = event => {
       if (event.keyCode === 65) {
         movePlayer(map, "left");
       }
@@ -50,14 +47,12 @@
       if (event.keyCode === 32) {
         alert("The 'Space' key was pressed.");
       }
-    }, 125);
+    };
     document.addEventListener("keydown", controls);
   }
 
   function endGame() {
     document.removeEventListener("keydown", controls);
-    clearInterval(updateState);
-    clearInterval(renderState);
   }
 
   function renderGameOverText() {
@@ -68,16 +63,24 @@
   }
 
   function gameLoop() {
-    map = advanceMobs(map);
-    map = spawnMobs(map);
+    updateState();
+    renderState();
 
     if (isLoseConditionMet(map)) {
       renderGameOverText();
       endGame();
+      return;
     }
+
+    requestAnimationFrame(gameLoop);
   }
 
-  function renderLoop() {
+  function updateState() {
+    map = advanceMobs(map);
+    map = spawnMobs(map);
+  }
+
+  function renderState() {
     const canvas = document.getElementById("canvas");
     const context = canvas.getContext("2d");
     clearCanvas(canvas, context);
@@ -90,22 +93,18 @@
   }
 
   function renderPlayer(context) {
-    const player = new Image();
-    player.src = Player;
-    const playerPosition = map[10].indexOf("player");
-    context.drawImage(player, 32 * playerPosition, 320);
+    const playerImage = new Image();
+    playerImage.src = Player;
+    const player = map.find(entity => entity.type === "player");
+    context.drawImage(playerImage, player.position.x, player.position.y);
   }
 
   function renderMobs(context) {
-    const warrior = new Image();
-    warrior.src = MobWarrior;
-    map.forEach((row, rowIndex) => {
-      row.forEach((cell, index) => {
-        if (cell !== "mob_warrior") {
-          return;
-        }
-        context.drawImage(warrior, 32 * index, 32 * rowIndex);
-      });
+    const warriorImage = new Image();
+    warriorImage.src = MobWarrior;
+    const mobs = map.filter(entity => entity.type === "mob_warrior");
+    mobs.forEach(mob => {
+      context.drawImage(warriorImage, mob.position.x, mob.position.y);
     });
   }
 </script>
