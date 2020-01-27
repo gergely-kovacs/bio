@@ -16,7 +16,7 @@ export function advanceMobs (map, delta) {
       ...mob,
       position: {
         ...mob.position,
-        y: mob.position.y + delta / 100
+        y: mob.position.y + delta / 10
       }
     };
   });
