@@ -12,14 +12,19 @@
   import { debounce } from "../services/common";
 
   let isErrorShown = false;
-  let map = [[]];
+  let map = [];
   let controls;
+  let canvas;
+  let context;
+  let lastUpdate;
 
   onMount(() => {
+    canvas = document.getElementById("canvas");
     if (!isRunnable()) {
       showError();
       return;
     }
+    context = canvas.getContext("2d");
     map = initMap();
     initControls();
     gameLoop();
@@ -28,7 +33,6 @@
   onDestroy(() => endGame());
 
   function isRunnable() {
-    const canvas = document.getElementById("canvas");
     return !!canvas.getContext;
   }
 
@@ -44,8 +48,8 @@
       if (event.keyCode === 68) {
         movePlayer(map, "right");
       }
-      if (event.keyCode === 32) {
-        alert("The 'Space' key was pressed.");
+      if (event.keyCode === 81) {
+        alert("The 'Q' key was pressed.");
       }
     };
     document.addEventListener("keydown", controls);
@@ -56,14 +60,18 @@
   }
 
   function renderGameOverText() {
-    const canvas = document.getElementById("canvas");
-    const context = canvas.getContext("2d");
     context.font = "50px serif";
     context.fillText("Game Over", 50, 90);
   }
 
-  function gameLoop() {
-    updateState();
+  function gameLoop(elapsedTime) {
+    if (!lastUpdate && elapsedTime) {
+      lastUpdate = elapsedTime;
+    }
+
+    const delta = elapsedTime - lastUpdate || 16.67;
+
+    updateState(delta);
     renderState();
 
     if (isLoseConditionMet(map)) {
@@ -72,34 +80,33 @@
       return;
     }
 
+    lastUpdate = elapsedTime;
     requestAnimationFrame(gameLoop);
   }
 
-  function updateState() {
-    map = advanceMobs(map);
+  function updateState(delta) {
+    map = advanceMobs(map, delta);
     map = spawnMobs(map);
   }
 
   function renderState() {
-    const canvas = document.getElementById("canvas");
-    const context = canvas.getContext("2d");
-    clearCanvas(canvas, context);
-    renderPlayer(context);
-    renderMobs(context);
+    clearCanvas();
+    renderPlayer();
+    renderMobs();
   }
 
-  function clearCanvas(canvas, context) {
+  function clearCanvas() {
     context.clearRect(0, 0, canvas.width, canvas.height);
   }
 
-  function renderPlayer(context) {
+  function renderPlayer() {
     const playerImage = new Image();
     playerImage.src = Player;
     const player = map.find(entity => entity.type === "player");
     context.drawImage(playerImage, player.position.x, player.position.y);
   }
 
-  function renderMobs(context) {
+  function renderMobs() {
     const warriorImage = new Image();
     warriorImage.src = MobWarrior;
     const mobs = map.filter(entity => entity.type === "mob_warrior");

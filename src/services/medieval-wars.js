@@ -8,7 +8,7 @@ export function initMap () {
   }];
 }
 
-export function advanceMobs (map) {
+export function advanceMobs (map, delta) {
   const mobs = map.filter(entity => entity.type === 'mob_warrior');
   const others = map.filter(entity => entity.type !== 'mob_warrior');
   const movedMobs = mobs.map(mob => {
@@ -16,7 +16,7 @@ export function advanceMobs (map) {
       ...mob,
       position: {
         ...mob.position,
-        y: mob.position.y + 1
+        y: mob.position.y + delta / 10
       }
     };
   });
