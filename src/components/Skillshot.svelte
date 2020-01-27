@@ -5,7 +5,9 @@
   import {
     initMap,
     advanceMobs,
+    advanceProjectiles,
     spawnMobs,
+    spawnProjectileQ,
     isLoseConditionMet,
     movePlayer
   } from "../services/skillshot.js";
@@ -79,6 +81,9 @@
       if (abilityKeys.includes(event.keyCode) && pressedKeys[event.keyCode]) {
         pressedKeys[event.keyCode] = false;
       }
+      if (event.keyCode === KEYCODES.Q) {
+        map = spawnProjectileQ(map, cursorPosition);
+      }
     };
 
     mouseMoveHandler = event => {
@@ -110,10 +115,13 @@
 
   function renderClickToStartText() {
     context.font = "50px serif";
+    context.fillStyle = "black";
     context.fillText("Click to start!", 45, 90);
   }
 
   function renderGameOverText() {
+    context.font = "50px serif";
+    context.fillStyle = "black";
     context.fillText("Game Over", 50, 90);
   }
 
@@ -139,6 +147,7 @@
 
   function updateState(delta) {
     map = advanceMobs(map, delta);
+    map = advanceProjectiles(map, delta);
     map = spawnMobs(map);
   }
 
@@ -147,6 +156,7 @@
     renderPlayer();
     renderMobs();
     renderSkillCues();
+    renderProjectiles();
   }
 
   function clearCanvas() {
@@ -170,15 +180,35 @@
   }
 
   function renderSkillCues() {
-    const player = map.find(entity => entity.type === 'player');
+    const player = map.find(entity => entity.type === "player");
     if (pressedKeys[KEYCODES.Q]) {
       context.beginPath();
       context.moveTo(player.position.x + 16, player.position.y);
       context.lineTo(cursorPosition.x, cursorPosition.y);
-      context.strokeStyle = "#00f";
+      context.strokeStyle = "blue";
       context.lineWidth = 4;
       context.stroke();
     }
+  }
+
+  function renderProjectiles() {
+    const projectiles = map.filter(entity => entity.type === "projectile_q");
+    projectiles.forEach(projectile => {
+      context.lineWidth = 4;
+      context.strokeStyle = "black";
+      context.beginPath();
+      context.moveTo(projectile.position.x, projectile.position.y);
+      context.arc(
+        projectile.position.x,
+        projectile.position.y,
+        4,
+        0,
+        2 * Math.PI
+      );
+      context.stroke();
+    });
+    context.fillStyle = "white";
+    context.fill();
   }
 </script>
 

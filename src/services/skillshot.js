@@ -16,12 +16,30 @@ export function advanceMobs (map, delta) {
       ...mob,
       position: {
         ...mob.position,
-        y: mob.position.y + delta / 10
+        y: mob.position.y + delta / 100
       }
     };
   });
   return [
     ...movedMobs,
+    ...others
+  ];
+}
+
+export function advanceProjectiles (map, delta) {
+  const projectiles = map.filter(entity => entity.type === 'projectile_q');
+  const others = map.filter(entity => entity.type !== 'projectile_q');
+  const movedProjectiles = projectiles.map(projectile => {
+    return {
+      ...projectile,
+      position: {
+        x: projectile.position.x - projectile.velocity.x * delta,
+        y: projectile.position.y - projectile.velocity.y * delta
+      }
+    };
+  });
+  return [
+    ...movedProjectiles,
     ...others
   ];
 }
@@ -40,6 +58,29 @@ export function spawnMobs (map) {
       }
     ]
     : map;
+}
+
+export function spawnProjectileQ (map, cursorPosition) {
+  const player = map.find(entity => entity.type === 'player');
+  const projectilePosition = {
+    x: player.position.x - cursorPosition.x,
+    y: player.position.y - cursorPosition.y
+  };
+  const vectorLength = Math.sqrt(Math.pow(Math.abs(projectilePosition.x), 2) + Math.pow(Math.abs(projectilePosition.y), 2));
+  return [
+    ...map,
+    {
+      type: 'projectile_q',
+      position: {
+        ...player.position,
+        x: player.position.x + 16
+      },
+      velocity: {
+        x: projectilePosition.x / vectorLength,
+        y: projectilePosition.y / vectorLength
+      }
+    }
+  ];
 }
 
 export function movePlayer (map, direction) {
