@@ -11,12 +11,31 @@
   } from "../services/skillshot.js";
   import { debounce } from "../services/common";
 
+  const KEYCODES = Object.freeze({
+    Q: 81,
+    W: 87,
+    E: 69,
+    R: 82
+  });
+
   let isErrorShown = false;
   let map = [];
-  let controls;
+  let keyDownHandler;
+  let keyUpHandler;
+  let mouseMoveHandler;
   let canvas;
   let context;
   let lastUpdate;
+  let pressedKeys = {
+    [KEYCODES.Q]: false,
+    [KEYCODES.W]: false,
+    [KEYCODES.E]: false,
+    [KEYCODES.R]: false
+  };
+  let cursorPosition = {
+    x: 0,
+    y: 0
+  };
 
   onMount(() => {
     canvas = document.getElementById("canvas");
@@ -42,22 +61,42 @@
   }
 
   function initControls() {
-    controls = event => {
+    const abilityKeys = Object.values(KEYCODES);
+
+    keyDownHandler = event => {
       if (event.keyCode === 65) {
         movePlayer(map, "left");
       }
       if (event.keyCode === 68) {
         movePlayer(map, "right");
       }
-      if (event.keyCode === 81) {
-        alert("The 'Q' key was pressed.");
+      if (abilityKeys.includes(event.keyCode) && !pressedKeys[event.keyCode]) {
+        pressedKeys[event.keyCode] = true;
       }
     };
-    document.addEventListener("keydown", controls);
+
+    keyUpHandler = event => {
+      if (abilityKeys.includes(event.keyCode) && pressedKeys[event.keyCode]) {
+        pressedKeys[event.keyCode] = false;
+      }
+    };
+
+    mouseMoveHandler = event => {
+      cursorPosition = {
+        x: event.offsetX,
+        y: event.offsetY
+      };
+    };
+
+    document.addEventListener("keydown", keyDownHandler);
+    document.addEventListener("keyup", keyUpHandler);
+    canvas.addEventListener("mousemove", mouseMoveHandler);
   }
 
   function endGame() {
-    document.removeEventListener("keydown", controls);
+    document.removeEventListener("keydown", keyDownHandler);
+    document.removeEventListener("keyup", keyUpHandler);
+    canvas.removeEventListener("mousemove", mouseMoveHandler);
   }
 
   function clickToStart(event) {
@@ -107,6 +146,7 @@
     clearCanvas();
     renderPlayer();
     renderMobs();
+    renderSkillCues();
   }
 
   function clearCanvas() {
@@ -127,6 +167,18 @@
     mobs.forEach(mob => {
       context.drawImage(warriorImage, mob.position.x, mob.position.y);
     });
+  }
+
+  function renderSkillCues() {
+    const player = map.find(entity => entity.type === 'player');
+    if (pressedKeys[KEYCODES.Q]) {
+      context.beginPath();
+      context.moveTo(player.position.x + 16, player.position.y);
+      context.lineTo(cursorPosition.x, cursorPosition.y);
+      context.strokeStyle = "#00f";
+      context.lineWidth = 4;
+      context.stroke();
+    }
   }
 </script>
 
