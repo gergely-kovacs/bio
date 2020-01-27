@@ -58,6 +58,6 @@ export function movePlayer (map, direction) {
 }
 
 export function isLoseConditionMet (map) {
-  const mobByTheEnd = map.find(entity => entity.type === 'mob_warrior' && entity.position.y === 320);
+  const mobByTheEnd = map.find(entity => entity.type === 'mob_warrior' && entity.position.y >= 320);
   return !!mobByTheEnd;
 }

@@ -5,6 +5,7 @@ import { advanceMobs, isLoseConditionMet } from '../src/services/medieval-wars';
 describe('Medieval Wars', () => {
   describe('advanceMobs', () => {
     it('should move mobs further', () => {
+      const delta = 16.67;
       const initialState = [{
         type: 'mob_warrior',
         position: {
@@ -28,13 +29,13 @@ describe('Medieval Wars', () => {
         type: 'mob_warrior',
         position: {
           x: 0,
-          y: 2
+          y: 2.6670000000000003
         }
       }, {
         type: 'mob_warrior',
         position: {
           x: 250,
-          y: 252
+          y: 252.667
         }
       }, {
         type: 'player',
@@ -44,7 +45,7 @@ describe('Medieval Wars', () => {
         }
       }];
 
-      const result = advanceMobs(initialState);
+      const result = advanceMobs(initialState, delta);
 
       expect(result).to.deep.equal(expected);
     });
