@@ -8,7 +8,7 @@
     spawnMobs,
     isLoseConditionMet,
     movePlayer
-  } from "../services/medieval-wars.js";
+  } from "../services/skillshot.js";
   import { debounce } from "../services/common";
 
   let isErrorShown = false;
@@ -27,7 +27,8 @@
     context = canvas.getContext("2d");
     map = initMap();
     initControls();
-    gameLoop();
+    attachClickToStart();
+    renderClickToStartText();
   });
 
   onDestroy(() => endGame());
@@ -59,8 +60,21 @@
     document.removeEventListener("keydown", controls);
   }
 
-  function renderGameOverText() {
+  function clickToStart(event) {
+    gameLoop();
+    canvas.removeEventListener("click", clickToStart);
+  }
+
+  function attachClickToStart() {
+    canvas.addEventListener("click", clickToStart);
+  }
+
+  function renderClickToStartText() {
     context.font = "50px serif";
+    context.fillText("Click to start!", 45, 90);
+  }
+
+  function renderGameOverText() {
     context.fillText("Game Over", 50, 90);
   }
 
@@ -121,14 +135,14 @@
 </style>
 
 <div class="container">
-  <h4>Medieval Wars</h4>
+  <h4>Skillshot warmup (WIP)</h4>
   <p>
-    Your task is do defend against the attackers using your bow and arrows.
+    This game is made to help you warm up for skillshots in MOBA games.
     <br />
-    You can move your character (at the bottom) left and right with the A and D
-    keys.
+    You can move your character left and right with the A and D keys.
     <br />
-    You can shoot an arrow with the Space key.
+    You'll be able to shoot several kinds of skillshots with Q, W, E, and R.
+    (Not yet implemented)
   </p>
   <div class="text-center">
     {#if isErrorShown}

@@ -1,8 +1,8 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import { advanceMobs, isLoseConditionMet } from '../src/services/medieval-wars';
+import { advanceMobs, isLoseConditionMet } from '../src/services/skillshot';
 
-describe('Medieval Wars', () => {
+describe('Skillshot', () => {
   describe('advanceMobs', () => {
     it('should move mobs further', () => {
       const delta = 16.67;
