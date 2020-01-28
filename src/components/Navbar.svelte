@@ -44,7 +44,7 @@
         class="nav-item nav-link text-center rounded-0"
         use:active
         href="#/">
-        Intro
+        Intro (WIP)
       </a>
       <a
         class="nav-item nav-link text-center rounded-0"

@@ -224,7 +224,7 @@
     You can move your character left and right with the A and D keys.
     <br />
     You'll be able to shoot several kinds of skillshots with Q, W, E, and R.
-    (Not yet implemented)
+    (W, E, R are not yet implemented)
   </p>
   <div class="text-center">
     {#if isErrorShown}
