@@ -76,11 +76,32 @@ export function spawnProjectileQ (map, cursorPosition) {
         x: player.position.x + 16
       },
       velocity: {
-        x: projectilePosition.x / vectorLength,
+        x: (projectilePosition.x + 16) / vectorLength,
         y: projectilePosition.y / vectorLength
       }
     }
   ];
+}
+
+export function detectHits (map) {
+  const projectiles = map.filter(entity => entity.type === 'projectile_q');
+  const mobs = map.filter(entity => entity.type === 'mob_warrior');
+  const hitProjectiles = [];
+  const hitMobs = mobs.filter(mob =>
+    projectiles.some(projectile => {
+      const isMobHit = Math.abs(mob.position.x + 16 - projectile.position.x) <= 16 &&
+        Math.abs(mob.position.y + 16 - projectile.position.y) <= 16;
+      const isProjectileOffScreen = projectile.position.x < 0 ||
+        projectile.position.x > 320 ||
+        projectile.position.y < 0 ||
+        projectile.position.y > 320;
+      if (isMobHit || isProjectileOffScreen) {
+        hitProjectiles.push(projectile);
+      }
+      return isMobHit;
+    })
+  );
+  return map.filter(entity => !hitMobs.includes(entity) && !hitProjectiles.includes(entity));
 }
 
 export function movePlayer (map, direction) {

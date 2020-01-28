@@ -8,6 +8,7 @@
     advanceProjectiles,
     spawnMobs,
     spawnProjectileQ,
+    detectHits,
     isLoseConditionMet,
     movePlayer
   } from "../services/skillshot.js";
@@ -148,6 +149,7 @@
   function updateState(delta) {
     map = advanceMobs(map, delta);
     map = advanceProjectiles(map, delta);
+    map = detectHits(map);
     map = spawnMobs(map);
   }
 
@@ -201,14 +203,12 @@
       context.arc(
         projectile.position.x,
         projectile.position.y,
-        4,
+        2,
         0,
         2 * Math.PI
       );
       context.stroke();
     });
-    context.fillStyle = "white";
-    context.fill();
   }
 </script>
 
